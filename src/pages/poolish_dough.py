@@ -1,18 +1,19 @@
+import textwrap
+
 import streamlit as st
+
+from instructions import INGREDIENTS, TIPS, HYDRATION_HELP
 
 st.set_page_config(
     page_title="Poolish Pizza Dough",
     page_icon="🍕",
 )
 
-
 st.title("🍕 Poolish Pizza Dough")
 
-with st.expander("Instructions", expanded=False):
-    st.markdown(
-        """
+METHOD = textwrap.dedent("""
     ### Preferment (Poolish)
-    - flour and water
+    - flour and water (equal parts by weight)
     - 3g dry yeast
     - tsp honey (optional)
     Mix water, yeast and honey and leave for 5mins. If it's foaming, your yeast is active, but if not try again with other yeast.
@@ -22,15 +23,12 @@ with st.expander("Instructions", expanded=False):
     Mix (gently) water with poolish and put aside. Mix salt (2-3% of total flour mass) with flour (whisk is good). Now put it all together and combine well.
     Stretch and fold several times at half hour intervals. Use water on your hands and work quickly to avoid the dough sticking. It'll be SUPER wet and sticky.
     This dough should rest for a few hours (2hrs).
+""").strip()
 
-    ### Shape
-    Divide into dough balls and let them rest (1hr).
-
-    ⚠️ Use strong flour (W 280-330) and non-iodised salt. See _W Index_ for more details.
-
-    📝 See https://www.gigacalculator.com/calculators/pizza-dough-calculator.php to check.
-    """
-    )
+with st.expander("General Instructions", expanded=False):
+    st.markdown(INGREDIENTS)
+    st.markdown(METHOD)
+    st.markdown(TIPS)
 
 # User input
 dough_ball_count = st.number_input(
@@ -46,12 +44,6 @@ dough_ball_size = st.number_input(
 
 dough_weight = dough_ball_size * dough_ball_count
 
-hydration_help = """\
-- 50% would be very dry
-- 65% is a good middle ground
-- 70% is quite wet and recommended for Neopolitan style
-- 80% would be very wet and hard to work with\
-"""
 dough_hydration = st.slider(
     "Hydration",
     value=65,
@@ -59,7 +51,7 @@ dough_hydration = st.slider(
     max_value=80,
     step=1,
     format="%d%%",
-    help=hydration_help,
+    help=HYDRATION_HELP,
 )
 salt_percentage = st.slider(
     "Salt percentage",
